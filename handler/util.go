@@ -59,20 +59,20 @@ func getENV(env string) string {
 	return env_value
 }
 
-func trRequest(method string, url string, users Users) (*http.Response, error) {
-	var req *http.Request
-	var err error
-
-	req, err = http.NewRequest(method, url, nil)
-	if err != nil {
-		return nil, err
-	}
-	req.SetBasicAuth(users.Username, users.Password)
-	req.Header.Set("X-CSRF-Token", "1")
-
-	return tr.RoundTrip(req)
-
-}
+//func trRequest(method string, url string, users Users) (*http.Response, error) {
+//	var req *http.Request
+//	var err error
+//
+//	req, err = http.NewRequest(method, url, nil)
+//	if err != nil {
+//		return nil, err
+//	}
+//	req.SetBasicAuth(users.Username, users.Password)
+//	req.Header.Set("X-CSRF-Token", "1")
+//
+//	return tr.RoundTrip(req)
+//
+//}
 
 func getDFtoken(info string) string {
 	if len(info) == 0 {

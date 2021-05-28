@@ -22,10 +22,44 @@ func init() {
 	log.RegisterSink(lager.NewWriterSink(os.Stdout, lager.DEBUG))
 }
 
-type Users struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
+type Postbody struct {
+	N string `json:"n"`
+	M string `json:"m"`
+	H string `json:"H"`
+	L string `json:"L"`
+	ATTR []Point `json:"attr"`
+	LOAD []Load `json:"load"`
 }
+type Point struct {
+	SOURCE Pointtype `json:"source"`
+	TARGET Pointtype `json:"target"`
+	MATERIAL string `json:"material"`
+	SECTION string `json:"section"`
+	SIZE Sizetype `json:"size"`
+}
+type Pointtype struct {
+	POINT string `json:"point"`
+	COORDINATE Coordinate `json:"coordinate"`
+}
+type Coordinate struct {
+	X int `json:"x"`
+	Y int `json:"y"`
+}
+type Sizetype struct {
+	T3 string `json:"t3"`
+	Tw string `json:"tw"`
+	T2 string `json:"t2,omitempty"`
+	TF string `json:"tf,omitempty"`
+}
+type Load struct {
+	SOURCE Pointtype `json:"source"`
+	TARGET Pointtype `json:"target"`
+	GERINO string `json:"region"`
+	INTRODUCE string `json:"introduce"`
+	DEADLOAD string `json:"deadload"`
+	LIVELOAD string `json:"liveload"`
+}
+
 
 func Cluster(c *gin.Context) {
 
@@ -34,10 +68,10 @@ func Cluster(c *gin.Context) {
 	if err != nil {
 		log.Error("CreateBC Read Request.Body error", err)
 	}
-	var user Users
+	var postbody Postbody
 
-	_ = json.Unmarshal(rBody, &user)
-	fmt.Printf("%#v\n",user)
+	_ = json.Unmarshal(rBody, &postbody)
+	fmt.Printf("%#v\n",postbody)
 
 	//users :=c.Request.Header["Authorization"][0]
 
@@ -73,11 +107,11 @@ func Cluster(c *gin.Context) {
 	//	return
 	//}
 
-	rsp := RstResponse{}
-	rsp.User = "admin"
-	//rsp.Token = result
-	fmt.Printf("%#v\n",rsp)
-	c.JSON(http.StatusOK, rsp)
+	//rsp := RstResponse{}
+	//rsp.User = "admin"
+	////rsp.Token = result
+	//fmt.Printf("%#v\n",rsp)
+	c.JSON(http.StatusOK, postbody)
 	return
 
 }
